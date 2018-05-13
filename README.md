@@ -1,6 +1,6 @@
 <div align="center" markdown="1">
 
-<img src="./sugo.svg" alt="Angular Doxize" width="250" style="margin-left:-60px;">
+<img src="./sugo.svg?v=1" alt="Angular Doxize" width="250">
 
 **A breathing HTTP server and reverse proxy in Go**
 
