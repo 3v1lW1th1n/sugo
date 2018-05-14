@@ -1,6 +1,6 @@
 <div align="center" markdown="1">
 
-<img src="./mascot.svg" alt="sugo" width="250">
+<img src="./mascot.svg" alt="sugo" width="350">
 
 **A breathing HTTP server and reverse proxy in Go**
 
