@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -26,7 +25,7 @@ func NewProxy(target string, prefix string) *Prox {
 func (p *Prox) Handle(w http.ResponseWriter, r *http.Request) {
 	// set host
 	r.Host = r.URL.Host
-	// cors
+	// refactor CORS
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	lrw := NewLoggingResponseWriter(w)
@@ -34,7 +33,6 @@ func (p *Prox) Handle(w http.ResponseWriter, r *http.Request) {
 	originalURLPath := r.URL.Path
 	r.URL.Path = strings.TrimPrefix(r.URL.Path, p.prefix)
 	p.proxy.ServeHTTP(lrw, r)
-	// add to logger decouple colors
-	fmt.Printf("%s %s \x1b[0;32m%d\x1b[0m\n", r.Method, originalURLPath, originalStatusCode)
-	fmt.Printf("%s  \x1b[0;33m↳\x1b[0m  %s%s \x1b[0;32m%d\x1b[0m\n", r.Method, p.target, r.URL.Path, lrw.statusCode)
+	LogResponse(r.Method, originalURLPath, originalStatusCode, false)
+	LogResponse(r.Method, p.target.String()+r.URL.Path, lrw.statusCode, true)
 }

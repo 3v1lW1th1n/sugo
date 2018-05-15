@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"regexp"
 )
@@ -33,8 +32,7 @@ func (h *RegexpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			lrw := NewLoggingResponseWriter(w)
 			route.handler.ServeHTTP(lrw, r)
 			if !route.proxy {
-				// add to logger decouple colors
-				fmt.Printf("%s %s \x1b[0;32m%d\x1b[0m\n", r.Method, r.URL.Path, lrw.statusCode)
+				LogResponse(r.Method, r.URL.Path, lrw.statusCode, route.proxy)
 			}
 			return
 		}
