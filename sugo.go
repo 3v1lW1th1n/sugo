@@ -7,11 +7,12 @@ import (
 )
 
 func main() {
-	fmt.Println("\x1b[0;32mThe server is up and running at 7000!\x1b[0m")
+	fmt.Println("The server is up and running at http://localhost:7000")
 
+	// make this configurable
 	h := RegexpHandler{}
 	proxy := NewProxy("http://localhost:3000", "/api")
-	h.HandleFunc(regexp.MustCompile("/api*"), proxy.Handle)
+	h.HandleFunc(regexp.MustCompile("/api*"), proxy.Handle, true)
 	h.Handler(regexp.MustCompile("/"), http.FileServer(http.Dir("./public")))
 
 	http.Handle("/", &h)

@@ -16,5 +16,6 @@ func NewLoggingResponseWriter(w http.ResponseWriter) *LoggingResponseWriter {
 // WriteHeader intercepts the status code and writes it to the struct
 func (lrw *LoggingResponseWriter) WriteHeader(code int) {
 	lrw.statusCode = code
+	lrw.ResponseWriter.Header().Del("X-Powered-By")
 	lrw.ResponseWriter.WriteHeader(code)
 }
