@@ -12,7 +12,7 @@ func main() {
 	// make this configurable
 	h := RegexpHandler{}
 	proxy := NewProxy("http://localhost:3000", "/api")
-	h.HandleFunc(regexp.MustCompile("/api*"), proxy.Handle, true)
+	h.HandleFunc(regexp.MustCompile("/api/*"), proxy.Handle, true)
 	h.Handler(regexp.MustCompile("/"), http.FileServer(http.Dir("./public")))
 
 	http.Handle("/", &h)

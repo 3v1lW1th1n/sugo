@@ -23,6 +23,11 @@ func NewProxy(target string, prefix string) *Prox {
 
 // Handle handler function for the proxy created
 func (p *Prox) Handle(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path == p.prefix && len(p.prefix) > 1 {
+		// redirect to trailing "/" path
+		redirect(w, r, r.URL.String())
+		return
+	}
 	// set host
 	r.Host = r.URL.Host
 	// refactor CORS
@@ -35,4 +40,9 @@ func (p *Prox) Handle(w http.ResponseWriter, r *http.Request) {
 	p.proxy.ServeHTTP(lrw, r)
 	LogResponse(r.Method, originalURLPath, originalStatusCode, false)
 	LogResponse(r.Method, p.target.String()+r.URL.Path, lrw.statusCode, true)
+}
+
+func redirect(w http.ResponseWriter, r *http.Request, path string) {
+	LogResponse(r.Method, path, 302, false)
+	http.Redirect(w, r, path+"/", 302)
 }
