@@ -2,7 +2,7 @@
 
 <img src="./mascot.svg" alt="sugo" width="350">
 
-**A breathing HTTP server and reverse proxy in Go**
+**HTTP server and reverse proxy in Go**
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/goasis/sugo)](https://goreportcard.com/report/github.com/goasis/sugo) [![Build Status](https://travis-ci.org/goasis/sugo.svg?branch=master)](https://travis-ci.org/goasis/sugo)
 
@@ -10,4 +10,4 @@
 
 ## Sugo
 
-A breathing HTTP server and reverse proxy in Go
+HTTP server and reverse proxy in Go. Built using only the Go standard libraries.
