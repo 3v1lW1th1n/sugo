@@ -1,0 +1,14 @@
+{
+  "port": 7000,
+  "baseDir": "./public",
+  "compress": true,
+  "proxy": [
+    {
+      "context": "/api",
+      "target": "http://localhost:3000",
+      "pathRewrite": {
+        "^/api": ""
+      }
+    }
+  ]
+}
