@@ -5,24 +5,26 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"strings"
+
+	"github.com/geocine/sugo/logger"
 )
 
 // Prox holds proxy definitions
-type Prox struct {
+type Proxy struct {
 	target *url.URL
 	proxy  *httputil.ReverseProxy
 	prefix string
 }
 
 // NewProxy creates a new based on url and prefix
-func NewProxy(target string, prefix string) *Prox {
+func NewProxy(target string, prefix string) *Proxy {
 	locurl, _ := url.Parse(target)
 	proxy := httputil.NewSingleHostReverseProxy(locurl)
-	return &Prox{target: locurl, prefix: prefix, proxy: proxy}
+	return &Proxy{target: locurl, prefix: prefix, proxy: proxy}
 }
 
 // Handle handler function for the proxy created
-func (p *Prox) Handle(w http.ResponseWriter, r *http.Request) {
+func (p *Proxy) Handle(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == p.prefix && len(p.prefix) > 1 {
 		// redirect to trailing "/" path
 		redirect(w, r, r.URL.String())
@@ -38,11 +40,11 @@ func (p *Prox) Handle(w http.ResponseWriter, r *http.Request) {
 	originalURLPath := r.URL.Path
 	r.URL.Path = strings.TrimPrefix(r.URL.Path, p.prefix)
 	p.proxy.ServeHTTP(lrw, r)
-	LogResponse(r.Method, originalURLPath, originalStatusCode, false)
-	LogResponse(r.Method, p.target.String()+r.URL.Path, lrw.statusCode, true)
+	logger.LogResponse(r.Method, originalURLPath, originalStatusCode, false)
+	logger.LogResponse(r.Method, p.target.String()+r.URL.Path, lrw.statusCode, true)
 }
 
 func redirect(w http.ResponseWriter, r *http.Request, path string) {
-	LogResponse(r.Method, path, 302, false)
+	logger.LogResponse(r.Method, path, 302, false)
 	http.Redirect(w, r, path+"/", 302)
 }

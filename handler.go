@@ -3,6 +3,8 @@ package main
 import (
 	"net/http"
 	"regexp"
+
+	"github.com/geocine/sugo/logger"
 )
 
 type route struct {
@@ -32,7 +34,7 @@ func (h *RegexpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			lrw := NewLoggingResponseWriter(w)
 			route.handler.ServeHTTP(lrw, r)
 			if !route.proxy {
-				LogResponse(r.Method, r.URL.Path, lrw.statusCode, route.proxy)
+				logger.LogResponse(r.Method, r.URL.Path, lrw.statusCode, route.proxy)
 			}
 			return
 		}
