@@ -17,5 +17,6 @@ func NewLoggingResponseWriter(w http.ResponseWriter) *LoggingResponseWriter {
 func (lrw *LoggingResponseWriter) WriteHeader(code int) {
 	lrw.statusCode = code
 	lrw.ResponseWriter.Header().Del("X-Powered-By")
+	lrw.ResponseWriter.Header().Set("Server", "sugo")
 	lrw.ResponseWriter.WriteHeader(code)
 }
